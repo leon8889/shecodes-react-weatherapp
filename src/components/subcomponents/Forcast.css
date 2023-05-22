@@ -1,0 +1,31 @@
+.Forcast {
+	font-size: 16px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.Forcast .weekDay {
+	font-size: 18px;
+	font-weight: bolder;
+}
+
+.Forcast .temperature {
+	font-size: 20px;
+	line-height: 25px;
+}
+
+.Forcast .temperatureLabel {
+	font-size: 14px;
+}
+
+.Forcast .temperatureMax {
+	margin-top: 10px;
+}
+
+.Forcast .temperatureMin {
+	border-top: 0.5px dashed rgb(105, 105, 105);
+}
+
+.Forcast .emoji {
+	font-size: 35px;
+}

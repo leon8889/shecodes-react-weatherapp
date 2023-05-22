@@ -1,0 +1,32 @@
+.Heading {
+	background-color: #10658e;
+	color: white;
+	border-radius: 28px 0px 0px 0px;
+	padding: 10px;
+	--bs-gutter-x: 0px;
+}
+
+.Heading h1 {
+	font-weight: bold;
+	font-size: 45px;
+}
+
+.Heading #citySearch {
+	font-size: 12px;
+}
+
+.Heading #citySearchButton {
+	background-color: #ffb900;
+	border-color: #ffb900;
+	border-radius: 0px 40px 40px 0px;
+	transition: all 200ms ease-in-out;
+}
+
+.Heading #citySearchButton:hover {
+	background-color: #e2a601fd;
+	border-color: #e2a601fd;
+}
+
+.Heading #searchIcon {
+	transform: translate(0px, -2px);
+}

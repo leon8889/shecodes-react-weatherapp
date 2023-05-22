@@ -1,0 +1,17 @@
+.CurrentCity {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.CurrentCity .CityName {
+	display: inline-block;
+}
+
+.CurrentCity .CityName::first-letter {
+	text-transform: capitalize;
+}
+
+.CurrentCity #CurrentLocation {
+	font-size: 20px;
+	text-decoration: none;
+}
