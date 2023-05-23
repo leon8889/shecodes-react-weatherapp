@@ -1,27 +1,16 @@
 import React from "react";
 
-import Heading from "./components/Heading.js";
-import Main from "./components/Main.js";
-import Footer from "./components/Footer.js";
+import Weather from "./components/Weather.js";
 
 import "./App.css";
 
 function App() {
+	let defaultCity = "new york";
 	return (
 		<div className="App">
 			<div className="image-wrapper">
 				<div className="container">
-					<Heading />
-					<div className="space">
-						<Main
-							currentCityName="munich"
-							description="clear"
-							temperature={11}
-							humidity={73}
-							wind={2}
-						/>
-						<Footer currentDate="Tuesday, Apr. 25 09:24" />
-					</div>
+					<Weather defaultCity={defaultCity} />
 				</div>
 			</div>
 		</div>

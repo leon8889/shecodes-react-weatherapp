@@ -1,6 +1,6 @@
-export default function ForcastDay(props) {
+export default function ForecastDay(props) {
 	return (
-		<div className="col ForcastDay">
+		<div className="col ForecastDay">
 			<div>{props.date}</div>
 			<div className="weekDay">{props.weekDay}</div>
 			<div className="temperature temperatureMax">

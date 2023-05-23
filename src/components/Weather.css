@@ -30,3 +30,15 @@
 .Heading #searchIcon {
 	transform: translate(0px, -2px);
 }
+
+.Main {
+	background-color: #c0deea;
+	margin-top: 50px;
+	margin-bottom: 40px;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.Footer .currentDate {
+	text-align: right;
+}
