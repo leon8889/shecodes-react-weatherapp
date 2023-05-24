@@ -39,6 +39,24 @@
 	border-radius: 10px;
 }
 
+.Main .CurrentCity {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.Main .CurrentCity .CityName {
+	display: inline-block;
+}
+
+.Main .CurrentCity .CityName::first-letter {
+	text-transform: capitalize;
+}
+
+.Main .CurrentCity #CurrentLocation {
+	font-size: 20px;
+	text-decoration: none;
+}
+
 .Footer .currentDate {
 	text-align: right;
 }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 
-import CurrentCity from "./subcomponents/CurrentCity.js";
 import CurrentWeather from "./subcomponents/CurrentWeather.js";
 // import Forecast from "./subcomponents/Forecast.js";
 
@@ -12,9 +11,16 @@ export default function Weather(props) {
 	const [weatherData, setWeatherData] = useState({ ready: false });
 	const [city, setCity] = useState(props.defaultCity);
 
-	function search() {
-		let apiKey = "tb533a02o404f422da6058f58bb72fcc";
+	let apiKey = "tb533a02o404f422da6058f58bb72fcc";
+
+	function searchWeather4City() {
 		let url = `https://api.shecodes.io/weather/v1/current?query=${city}&units=metric&key=${apiKey}`;
+
+		axios.get(url).then(handleResponse);
+	}
+
+	function searchWeather4Position(position) {
+		let url = `https://api.shecodes.io/weather/v1/current?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&key=${apiKey}`;
 
 		axios.get(url).then(handleResponse);
 	}
@@ -26,7 +32,7 @@ export default function Weather(props) {
 			temperature: Math.round(response.data.temperature.current),
 			description: response.data.condition.description,
 			humidity: response.data.temperature.humidity,
-			wind: response.data.wind.speed,
+			wind: Math.round(response.data.wind.speed * 10) / 10,
 			emojiURL: response.data.condition.icon_url,
 			currentDate: getCurrentDate(response.data.time),
 		});
@@ -40,8 +46,13 @@ export default function Weather(props) {
 	function handleSubmit(event) {
 		event.preventDefault();
 		if (city) {
-			search();
+			searchWeather4City();
 		}
+	}
+
+	function getGeolocation(event) {
+		event.preventDefault();
+		navigator.geolocation.getCurrentPosition(searchWeather4Position);
 	}
 
 	function getCurrentDate(timestamp) {
@@ -141,7 +152,31 @@ export default function Weather(props) {
 				</div>
 				<div className="space">
 					<div className="Main">
-						<CurrentCity CityName={weatherData.city} />
+						<div className="CurrentCity">
+							<div className="row">
+								<div className="col">
+									<p>
+										Weather in{" "}
+										<span className="CityName">{weatherData.city}</span>
+									</p>
+								</div>
+								<div className="col text-right">
+									<button
+										className="btn btn-link"
+										id="CurrentLocation"
+										onClick={getGeolocation}
+									>
+										<span
+											title="find weather at current location"
+											role="img"
+											aria-label="geolocation"
+										>
+											🚩
+										</span>
+									</button>
+								</div>
+							</div>
+						</div>
 
 						<CurrentWeather weatherData={weatherData} />
 						<hr />
@@ -171,7 +206,7 @@ export default function Weather(props) {
 			</div>
 		);
 	} else {
-		search();
+		searchWeather4City();
 		return <ThreeDots color="black" height={100} width={100} />;
 	}
 }

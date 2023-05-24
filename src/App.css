@@ -19,6 +19,7 @@
 	margin-bottom: 0px;
 	max-width: 800px;
 	--bs-gutter-x: 0px;
+	min-height: 100vh;
 }
 
 .App .space {
