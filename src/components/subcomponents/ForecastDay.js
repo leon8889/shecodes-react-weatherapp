@@ -1,3 +1,5 @@
+import WeatherIcon from "./WeatherIcon.js";
+
 export default function ForecastDay(props) {
 	return (
 		<div className="col ForecastDay">
@@ -14,7 +16,10 @@ export default function ForecastDay(props) {
 				<span>°C</span>
 			</div>
 			<div className="emoji">
-				<img src={props.emojiURL} alt="Weather Icon" />
+				<WeatherIcon
+					emojiURL={props.emojiURL}
+					description={props.description}
+				/>
 			</div>
 		</div>
 	);
