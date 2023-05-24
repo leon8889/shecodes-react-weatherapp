@@ -4,7 +4,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 import CurrentCity from "./subcomponents/CurrentCity.js";
 import CurrentWeather from "./subcomponents/CurrentWeather.js";
-import Forecast from "./subcomponents/Forecast.js";
+// import Forecast from "./subcomponents/Forecast.js";
 
 import "./Weather.css";
 
@@ -40,7 +40,7 @@ export default function Weather(props) {
 	function handleSubmit(event) {
 		event.preventDefault();
 		if (city) {
-			alert(`${city} is your city!`);
+			search();
 		}
 	}
 
@@ -145,7 +145,7 @@ export default function Weather(props) {
 
 						<CurrentWeather weatherData={weatherData} />
 						<hr />
-						<Forecast />
+						{/* <Forecast /> */}
 					</div>
 
 					<div className="Footer" id="footer">
