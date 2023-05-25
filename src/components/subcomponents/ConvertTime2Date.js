@@ -1,5 +1,3 @@
-// import React from "react";
-
 export default function ConvertTime2Date(timestamp) {
 	let days = [
 		"Sunday",
