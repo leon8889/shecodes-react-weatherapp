@@ -1,46 +1,33 @@
-import "./Forecast.css";
-import ForecastDay from "./ForecastDay.js";
+import React from "react";
 
-export default function Forecast() {
-	return (
-		<div className="Forecast">
-			<div className="row">
-				<ForecastDay
-					date="Nov. 4"
-					weekDay="today"
-					temperatureMax={15}
-					temperatureMin={10}
-					emojiURL="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-				/>
-				<ForecastDay
-					date="Nov. 5"
-					weekDay="Sunday"
-					temperatureMax={16}
-					temperatureMin={11}
-					emojiURL="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-				/>
-				<ForecastDay
-					date="Nov. 6"
-					weekDay="Monday"
-					temperatureMax={14}
-					temperatureMin={8}
-					emojiURL="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-				/>
-				<ForecastDay
-					date="Nov. 7"
-					weekDay="Tuesday"
-					temperatureMax={8}
-					temperatureMin={-1}
-					emojiURL="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-				/>
-				<ForecastDay
-					date="Nov. 8"
-					weekDay="Wednesday"
-					temperatureMax={20}
-					temperatureMin={15}
-					emojiURL="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/rain-day.png"
-				/>
+import ForecastDay from "./ForecastDay.js";
+import ConvertTime2Date from "./ConvertTime2Date";
+
+import "./Forecast.css";
+
+export default function Forecast(props) {
+	if (props.forecastData[0]) {
+		return (
+			<div className="Forecast">
+				<div className="row">
+					{props.forecastData.map(function (dailyForecast, index) {
+						let date = ConvertTime2Date(dailyForecast.time * 1000);
+						let weekDay = index === 0 ? "today" : date.weekDay;
+						let dateString = `${date.month} ${date.day}`;
+						return (
+							<div className="col" key={index}>
+								<ForecastDay
+									data={dailyForecast}
+									date={dateString}
+									weekDay={weekDay}
+								/>
+							</div>
+						);
+					})}
+				</div>
 			</div>
-		</div>
-	);
+		);
+	} else {
+		return null;
+	}
 }

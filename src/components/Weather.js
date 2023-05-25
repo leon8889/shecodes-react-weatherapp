@@ -3,12 +3,14 @@ import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 
 import CurrentWeather from "./subcomponents/CurrentWeather.js";
-// import Forecast from "./subcomponents/Forecast.js";
+import Forecast from "./subcomponents/Forecast.js";
+import Footer from "./subcomponents/Footer.js";
 
 import "./Weather.css";
 
 export default function Weather(props) {
 	const [weatherData, setWeatherData] = useState({ ready: false });
+	const [forecastData, setForecastData] = useState([]);
 	const [city, setCity] = useState(props.defaultCity);
 
 	let apiKey = "tb533a02o404f422da6058f58bb72fcc";
@@ -16,27 +18,60 @@ export default function Weather(props) {
 	function searchWeather4City() {
 		let url = `https://api.shecodes.io/weather/v1/current?query=${city}&units=metric&key=${apiKey}`;
 
-		axios.get(url).then(handleResponse);
+		axios.get(url).then(handleWeatherAPIResponse);
 	}
 
 	function searchWeather4Position(position) {
 		let url = `https://api.shecodes.io/weather/v1/current?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&key=${apiKey}`;
 
-		axios.get(url).then(handleResponse);
+		axios.get(url).then(handleWeatherAPIResponse);
 	}
 
-	function handleResponse(response) {
-		setWeatherData({
-			ready: true,
-			city: response.data.city,
-			temperature: Math.round(response.data.temperature.current),
-			description: response.data.condition.description,
-			humidity: response.data.temperature.humidity,
-			wind: Math.round(response.data.wind.speed * 10) / 10,
-			emojiURL: response.data.condition.icon_url,
-			currentDate: getCurrentDate(response.data.time),
-		});
-		setCity(response.data.city);
+	function handleWeatherAPIResponse(response) {
+		if (response.status === 200) {
+			setCity(response.data.city);
+			setWeatherData({
+				ready: true,
+				city: city,
+				temperature: Math.round(response.data.temperature.current),
+				description: response.data.condition.description,
+				humidity: response.data.temperature.humidity,
+				wind: Math.round(response.data.wind.speed * 10) / 10,
+				emojiURL: response.data.condition.icon_url,
+				time: response.data.time,
+			});
+			searchForecast4City(city);
+		} else {
+			console.log(`${response.status}: Response Error`);
+		}
+	}
+
+	function searchForecast4City(city) {
+		let url = `https://api.shecodes.io/weather/v1/forecast?query=${city}&units=metric&key=${apiKey}`;
+
+		axios.get(url).then(handleForecastAPIResponse);
+	}
+
+	function handleForecastAPIResponse(response) {
+		if (response.status === 200) {
+			let forecastResponse = response.data.daily;
+			let forecast = [];
+
+			forecastResponse.forEach(function (forecastDay, index) {
+				if (index < 5) {
+					forecast[index] = {
+						temperatureMax: Math.round(forecastDay.temperature.maximum),
+						temperatureMin: Math.round(forecastDay.temperature.minimum),
+						emojiURL: forecastDay.condition.icon_url,
+						description: forecastDay.condition.description,
+						time: forecastDay.time,
+					};
+				}
+			});
+			setForecastData(forecast);
+		} else {
+			console.log(`${response.status}: Response Error`);
+		}
 	}
 
 	function getCity(event) {
@@ -55,62 +90,7 @@ export default function Weather(props) {
 		navigator.geolocation.getCurrentPosition(searchWeather4Position);
 	}
 
-	function getCurrentDate(timestamp) {
-		let currentDate = getDate(timestamp * 1000);
-		return (
-			currentDate["weekDay"] +
-			", " +
-			currentDate["month"] +
-			" " +
-			currentDate["day"] +
-			" " +
-			currentDate["hours"] +
-			":" +
-			currentDate["minutes"]
-		);
-	}
-
-	function getDate(timestamp) {
-		let days = [
-			"Sunday",
-			"Monday",
-			"Tuesday",
-			"Wednesday",
-			"Thursday",
-			"Friday",
-			"Saturday",
-		];
-		let daysShort = ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."];
-		let months = [
-			"Jan.",
-			"Feb.",
-			"Mar.",
-			"Apr.",
-			"May",
-			"Jun.",
-			"Jul.",
-			"Aug.",
-			"Sep.",
-			"Oct.",
-			"Nov.",
-			"Dec.",
-		];
-
-		let date = new Date(timestamp);
-		let dateArray = {
-			hours: date.getHours() < 10 ? "0" + date.getHours() : date.getHours(),
-			minutes:
-				date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes(),
-			day: date.getDate(),
-			month: months[date.getMonth()],
-			weekDay: days[date.getDay()],
-			weekDayShort: daysShort[date.getDay()],
-		};
-		return dateArray;
-	}
-
 	if (weatherData.ready) {
-		console.log(weatherData);
 		return (
 			<div className="Weather">
 				<div className="Heading">
@@ -180,28 +160,10 @@ export default function Weather(props) {
 
 						<CurrentWeather weatherData={weatherData} />
 						<hr />
-						{/* <Forecast /> */}
+						<Forecast forecastData={forecastData} />
 					</div>
 
-					<div className="Footer" id="footer">
-						<div className="row">
-							<div className="col">
-								<p>
-									<a
-										href="https://github.com/leon8889/shecodes-react-weatherapp"
-										target="_blank"
-										rel="noreferrer"
-									>
-										Source code
-									</a>{" "}
-									by leon8889
-								</p>
-							</div>
-							<div className="col">
-								<p className="currentDate">{weatherData.currentDate}</p>
-							</div>
-						</div>
-					</div>
+					<Footer time={weatherData.time} />
 				</div>
 			</div>
 		);
