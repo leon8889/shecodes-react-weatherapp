@@ -1,5 +1,4 @@
 import WeatherIcon from "./WeatherIcon.js";
-import WeatherTemperature from "./WeatherTemperature.js";
 import "./CurrentWeather.css";
 
 export default function CurrentWeather(props) {
@@ -12,7 +11,8 @@ export default function CurrentWeather(props) {
 							emojiURL={props.weatherData.emojiURL}
 							description={props.weatherData.description}
 						/>
-						<WeatherTemperature temperature={props.weatherData.temperature} />
+						<span>{props.weatherData.temperature}</span>
+						<span className="units">°C</span>
 					</p>
 				</div>
 				<div className="col">

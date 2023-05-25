@@ -4,6 +4,7 @@ import { ThreeDots } from "react-loader-spinner";
 
 import CurrentWeather from "./subcomponents/CurrentWeather.js";
 import Forecast from "./subcomponents/Forecast.js";
+import ForecastGraphic from "./subcomponents/ForecastGraphic.js";
 import Footer from "./subcomponents/Footer.js";
 
 import "./Weather.css";
@@ -161,6 +162,8 @@ export default function Weather(props) {
 						<CurrentWeather weatherData={weatherData} />
 						<hr />
 						<Forecast forecastData={forecastData} />
+						<hr />
+						<ForecastGraphic forecastData={forecastData} />
 					</div>
 
 					<Footer time={weatherData.time} />
